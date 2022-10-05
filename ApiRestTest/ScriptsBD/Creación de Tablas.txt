@@ -1,0 +1,40 @@
+CREATE TABLE Usuario  
+(  
+    id INT PRIMARY KEY IDENTITY (1, 1)
+    ,UserEmail VARCHAR(255)  
+    ,UserPassword VARCHAR(255)  
+    ,UserName VARCHAR(255)
+    ,UserLastName VARCHAR(255)
+    ,UserDNI VARCHAR(255)
+    ,UserAge int
+);
+
+CREATE TABLE Producto  
+(  
+    id int PRIMARY KEY IDENTITY (1, 1)
+    ,ProductName VARCHAR(255)
+    ,ProductWeigth float
+    ,ProductHeight float
+    ,ProductWidth float
+    ,ProductCount int
+);
+
+CREATE TABLE Compra
+(
+    id int
+    ,UserId int
+    ,ProductId int
+    ,ProductCuantity INT
+    ,BuyDate DATETIME
+
+    ,CONSTRAINT pk_tbl_compra PRIMARY KEY(id,UserId,ProductId)
+);
+
+
+ALTER TABLE Compra
+ADD FOREIGN KEY (UserId) REFERENCES Usuario(id)
+ON DELETE CASCADE;
+
+ALTER TABLE Compra
+ADD FOREIGN KEY (ProductId) REFERENCES Producto(id)
+ON DELETE CASCADE;

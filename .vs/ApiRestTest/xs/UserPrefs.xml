@@ -1,0 +1,32 @@
+﻿<Properties StartupConfiguration="{A74E5C02-8276-4A2A-8171-70AE9F19451B}|Default">
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workbench ActiveDocument="ApiRestTest/Controllers/ComprasController.cs">
+    <Files>
+      <File FileName="ApiRestTest/Controllers/UsuarioController.cs" Line="77" Column="17" />
+      <File FileName="ApiRestTest/Controllers/ProductoController.cs" Line="49" Column="71" />
+      <File FileName="ApiRestTest/Controllers/ComprasController.cs" Line="4" Column="30" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="ApiRestTest" expanded="True">
+            <Node name="ApiRestTest" expanded="True">
+              <Node name="Contexts" expanded="True" />
+              <Node name="Controllers" expanded="True" />
+              <Node name="appsettings.json" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.ApiRestTest PreferredExecutionTarget="/Applications/Safari.app" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+</Properties>

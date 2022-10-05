@@ -1,0 +1,73 @@
+CREATE OR ALTER PROCEDURE sp_InsertarProducto
+@ProductName NVARCHAR(255),
+@ProductWeigth float,
+@ProductHeight float,
+@ProductWidth float,
+@ProductCount int
+AS
+DECLARE @ProductId INT
+BEGIN
+    INSERT INTO Producto
+    (ProductName,
+    ProductWeigth,
+    ProductHeight,
+    ProductWidth,
+    ProductCount) 
+    VALUES
+    (@ProductName, 
+    @ProductWeigth, 
+    @ProductHeight, 
+    @ProductWidth, 
+    @ProductCount);
+
+    SET @ProductId = SCOPE_IDENTITY();
+
+    SELECT * 
+    FROM Producto
+    WHERE id = @ProductId;
+END
+GO
+
+CREATE OR ALTER PROCEDURE sp_ModificarProducto
+@ProductId INT,
+@ProductName NVARCHAR(255),
+@ProductWeigth float,
+@ProductHeight float,
+@ProductWidth float,
+@ProductCount int
+AS
+BEGIN
+    UPDATE Producto
+    SET 
+        ProductName = @ProductName,
+        ProductWeigth = @ProductWeigth,
+        ProductHeight = @ProductHeight,
+        ProductWidth = @ProductWidth,
+        ProductCount = @ProductCount
+    WHERE id = @ProductId
+
+    SELECT * 
+    FROM Producto
+    WHERE id = @ProductId;
+END
+GO
+
+CREATE OR ALTER PROCEDURE sp_EliminarProducto
+@ProductId INT
+AS
+DECLARE @RESPONSE_NUMBER INT = 1, @RESPONSE_MESSAGE VARCHAR(250)
+BEGIN 
+    BEGIN TRY
+        DELETE
+        FROM Producto
+        WHERE id = @ProductId
+        SET @RESPONSE_NUMBER = 1;
+        SET @RESPONSE_MESSAGE = 'Producto Eliminado con exito';
+    END TRY
+    BEGIN CATCH
+        SET @RESPONSE_NUMBER = ERROR_NUMBER()
+        SET @RESPONSE_MESSAGE = ERROR_MESSAGE()
+    END CATCH
+    SELECT @RESPONSE_NUMBER as ResponseNumber,@RESPONSE_MESSAGE as ResponseMessage;
+END
+GO

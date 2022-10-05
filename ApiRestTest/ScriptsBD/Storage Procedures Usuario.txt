@@ -1,0 +1,90 @@
+CREATE OR ALTER PROCEDURE sp_InsertarUsuario
+@UserEmail NVARCHAR(255),  
+@UserPassword NVARCHAR(255),  
+@UserName NVARCHAR(255), 
+@UserLastName NVARCHAR(255), 
+@UserDNI NVARCHAR(255), 
+@UserAge int
+AS
+DECLARE @UserId INT
+BEGIN
+    INSERT INTO Usuario
+    (UserEmail,
+    UserPassword, 
+    UserName, 
+    UserLastName, 
+    UserDNI, 
+    UserAge) 
+    VALUES
+    (@UserEmail,
+    @UserPassword,
+    @UserName,
+    @UserLastName,
+    @UserDNI,
+    @UserAge);
+
+    SET @UserId = SCOPE_IDENTITY();
+
+    SELECT 
+       UserId = @UserId,
+	   UserEmail = @UserEmail,
+	   UserName = @UserName,
+	   UserLastName = @UserLastName,
+       UserDNI = @UserDNI,
+       UserAge = @UserAge
+    FROM Usuario 
+    WHERE  id = @UserId
+END
+GO
+
+CREATE OR ALTER PROCEDURE sp_ModificarUsuario
+@UserId INT,
+@UserEmail NVARCHAR(255),  
+@UserPassword NVARCHAR(255),  
+@UserName NVARCHAR(255), 
+@UserLastName NVARCHAR(255), 
+@UserDNI NVARCHAR(255), 
+@UserAge int
+AS
+BEGIN
+
+    UPDATE Usuario
+    SET 
+        UserEmail = @UserEmail,
+        UserPassword = @UserPassword,
+        UserName = @UserName,
+        UserLastName = @UserLastName,
+        UserDNI = @UserDNI,
+        UserAge = @UserAge
+    WHERE id = @UserId;
+    SELECT 
+       UserId = @UserId,
+	   UserEmail = @UserEmail,
+	   UserName = @UserName,
+	   UserLastName = @UserLastName,
+       UserDNI = @UserDNI,
+       UserAge = @UserAge
+    FROM Usuario 
+    WHERE  id = @UserId
+END
+GO
+
+CREATE OR ALTER PROCEDURE sp_EliminarUsuario
+@UserId INT
+AS
+DECLARE @RESPONSE_NUMBER INT = 1, @RESPONSE_MESSAGE VARCHAR(250)
+BEGIN 
+    BEGIN TRY
+        DELETE
+        FROM Usuario
+        WHERE id = @UserId
+        SET @RESPONSE_NUMBER = 1;
+        SET @RESPONSE_MESSAGE = 'Usuario Eliminado con exito';
+    END TRY
+    BEGIN CATCH
+        SET @RESPONSE_NUMBER = ERROR_NUMBER()
+        SET @RESPONSE_MESSAGE = ERROR_MESSAGE()
+    END CATCH
+    SELECT @RESPONSE_NUMBER as ResponseNumber,@RESPONSE_MESSAGE as ResponseMessage;
+END
+GO

@@ -1,0 +1,77 @@
+CREATE OR ALTER PROCEDURE sp_InsertarCompra
+@UserId INT,
+@ProductId INT,
+@ProductCuantity INT,
+@BuyDate DATETIME
+AS
+DECLARE 
+@CompraId INT = 0,
+@UserdIdAux INT = 0,
+@BuyDateAux DATETIME = '1950-01-01 13:23:44',
+@ProductCount INT,
+@RESPONSE_NUMBER INT = 1,
+@RESPONSE_MESSAGE NVARCHAR(250)
+BEGIN
+    SELECT TOP 1 
+        @CompraId = Compra.id,
+        @UserdIdAux = Compra.UserId,
+        @BuyDateAux = Compra.BuyDate
+    FROM Compra 
+    ORDER BY id DESC;
+    IF(@UserId <> @UserdIdAux OR @BuyDate <> @BuyDateAux)
+    BEGIN
+        SET @CompraId = @CompraId + 1;
+    END
+
+    SELECT
+        @ProductCount = Producto.ProductCount
+    FROM Producto
+    WHERE id = @ProductId;
+
+    IF(@ProductCuantity <= @ProductCount)
+    BEGIN TRY
+        INSERT INTO Compra
+        (id,
+        UserId,
+        ProductId,
+        ProductCuantity,
+        BuyDate) 
+        VALUES
+        (@CompraId,
+        @UserId,
+        @ProductId,
+        @ProductCuantity,
+        @BuyDate);
+        SET @ProductCount = @ProductCount - @ProductCuantity;
+        UPDATE Producto
+        SET ProductCount = @ProductCount
+        WHERE id = @ProductId;
+        SET @RESPONSE_NUMBER = 1;
+        SET @RESPONSE_MESSAGE = 'Compra Guardada con Exito';
+    END TRY
+    BEGIN CATCH
+        SET @RESPONSE_NUMBER = ERROR_NUMBER();
+        SET @RESPONSE_MESSAGE = ERROR_MESSAGE();
+        SET @CompraId = 0;
+    END CATCH
+    ELSE 
+    BEGIN
+        SET @RESPONSE_NUMBER = 3;
+        SET @RESPONSE_MESSAGE = 'No hay stock disponible';
+        SET @CompraId = 0;
+    END
+    SELECT @CompraId as Compra,@RESPONSE_NUMBER as ResponseNumber,@RESPONSE_MESSAGE as ResponseMessage;
+END
+GO
+
+CREATE OR ALTER PROCEDURE sp_ObtenerComprasPorUsuario 
+@userId INT
+AS
+BEGIN
+    SELECT Compra.id,Producto.ProductName,Compra.ProductCuantity,Compra.BuyDate 
+    FROM Compra
+    LEFT JOIN Producto
+    ON Compra.ProductId = Producto.id
+    WHERE Compra.UserId = @userId
+END
+GO
